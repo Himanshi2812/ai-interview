@@ -40,8 +40,8 @@ export default function CoverLetterList({ coverLetters }) {
 
   if (!coverLetters?.length) {
     return (
-      <Card>
-        <CardHeader>
+      <Card className="border-dashed">
+        <CardHeader className="text-center">
           <CardTitle>No Cover Letters Yet</CardTitle>
           <CardDescription>
             Create your first cover letter to get started
@@ -52,20 +52,20 @@ export default function CoverLetterList({ coverLetters }) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="grid gap-4">
       {coverLetters.map((letter) => (
-        <Card key={letter.id} className="group relative ">
+        <Card key={letter.id} className="group relative hover:-translate-y-0.5 transition-transform">
           <CardHeader>
-            <div className="flex items-start justify-between">
-              <div>
-                <CardTitle className="text-xl gradient-title">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
+                <CardTitle className="text-xl">
                   {letter.jobTitle} at {letter.companyName}
                 </CardTitle>
                 <CardDescription>
                   Created {format(new Date(letter.createdAt), "PPP")}
                 </CardDescription>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex gap-2">
                 <AlertDialog>
                   <Button
                     variant="outline"

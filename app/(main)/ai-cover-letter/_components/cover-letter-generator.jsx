@@ -59,7 +59,7 @@ export default function CoverLetterGenerator() {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="mx-auto max-w-4xl">
         <CardHeader>
           <CardTitle>Job Details</CardTitle>
           <CardDescription>
@@ -67,9 +67,9 @@ export default function CoverLetterGenerator() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Form fields remain the same */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="companyName">Company Name</Label>
                 <Input

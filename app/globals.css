@@ -1,39 +1,110 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Force dark background */
-
-body {
-  background-color: #020617;
-  color: #f8fafc;
-  min-height: 100vh;
+@theme {
+  --color-background: #07110f;
+  --color-foreground: #eef7f3;
+  --color-card: #111b18;
+  --color-card-foreground: #eef7f3;
+  --color-popover: #121c19;
+  --color-popover-foreground: #eef7f3;
+  --color-primary: #0f766e;
+  --color-primary-foreground: #f8fffd;
+  --color-secondary: #1a2723;
+  --color-secondary-foreground: #dfeae5;
+  --color-muted: #1a2421;
+  --color-muted-foreground: #9aa9a2;
+  --color-accent: #16352f;
+  --color-accent-foreground: #bff3e9;
+  --color-destructive: #dc5f2f;
+  --color-destructive-foreground: #fff7ed;
+  --color-border: #26352f;
+  --color-input: #2a3a34;
+  --color-ring: #2dd4bf;
+  --color-chart-1: #0f766e;
+  --color-chart-2: #d97706;
+  --color-chart-3: #334155;
+  --color-chart-4: #7c3aed;
+  --color-chart-5: #be123c;
 }
 
-/* Gradient utilities */
+body {
+  background:
+    radial-gradient(circle at top left, rgba(20, 184, 166, 0.18), transparent 30rem),
+    radial-gradient(circle at 90% 12%, rgba(245, 158, 11, 0.12), transparent 24rem),
+    linear-gradient(135deg, #07110f 0%, #101612 48%, #0b1f1b 100%);
+  color: #eef7f3;
+  min-height: 100vh;
+  text-rendering: geometricPrecision;
+}
+
+::selection {
+  background: rgba(45, 212, 191, 0.22);
+  color: #eef7f3;
+}
+
+.dark body {
+  background:
+    radial-gradient(circle at top left, rgba(20, 184, 166, 0.18), transparent 30rem),
+    radial-gradient(circle at 90% 12%, rgba(245, 158, 11, 0.12), transparent 24rem),
+    linear-gradient(135deg, #0f1413 0%, #17130f 48%, #0d1f1d 100%);
+  color: #f7f2ea;
+}
 
 .gradient {
-  background: linear-gradient(to bottom, #000000, #18181b);
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.94), rgba(20, 83, 45, 0.92)),
+    #0f766e;
 }
 
 .gradient-title {
-  background: linear-gradient(to bottom, #ffffff, #9ca3af);
+  background: linear-gradient(135deg, #f5fbf8 0%, #80eadb 48%, #d7e977 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
-/* Hero animation */
+.dark .gradient-title {
+  background: linear-gradient(135deg, #f9f4ea 0%, #5eead4 52%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grid-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(45, 212, 191, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 212, 191, 0.055) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 72%);
+}
+
+.surface-panel {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 28, 25, 0.78);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(18px);
+}
+
+.dark .surface-panel {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(18, 24, 22, 0.76);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+}
 
 .hero-image-wrapper {
   perspective: 1000px;
 }
 
 .hero-image {
-  transform: rotateX(15deg);
+  transform: rotateX(9deg) translateY(0);
   transition: transform 0.5s ease-out;
 }
 
 .hero-image.scrolled {
-  transform: rotateX(0deg) translateY(40px);
+  transform: rotateX(0deg) translateY(24px);
 }

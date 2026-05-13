@@ -1,208 +1,263 @@
 "use client";
 
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { onboardingSchema } from "@/app/lib/schema";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SelectLabel } from "@/components/ui/select";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+
 import useFetch from "@/hooks/use-fetch";
 import { updateUser } from "@/actions/user";
-import { Loader2 } from "lucide-react";
+
 import { toast } from "sonner";
+import { Loader2, UserRoundCheck } from "lucide-react";
 
-const OnboardingForm = ({industries}) => {
-    const [selectedIndustry, setSelectedIndustry] = useState(null);
-   const router = useRouter();
+export default function OnboardingForm({ industries }) {
 
-   const {
-    loading: updateLoading,
+  const router = useRouter();
+
+  const [selectedIndustry, setSelectedIndustry] = useState(null);
+
+  const [redirectLoading, setRedirectLoading] = useState(false);
+
+  const {
+    loading,
     fn: updateUserFn,
-    data: updateResult,
-   } = useFetch(updateUser)
+    data: result,
+  } = useFetch(updateUser);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm({
+    resolver: zodResolver(onboardingSchema),
+  });
 
-    const {register,
-        handleSubmit,
-        formState:{errors},
-         setValue,
-         watch,
-     } = useForm({
-        resolver: zodResolver(onboardingSchema),
+  const watchIndustry = watch("industry");
+
+  const onSubmit = async (values) => {
+
+    const formattedIndustry =
+      values.subIndustry || values.industry;
+
+    setRedirectLoading(true);
+
+    await updateUserFn({
+      ...values,
+      industry: formattedIndustry,
     });
+  };
 
-    const onSubmit = async (values) => {
-      try {
-        const formattedIndustry =`${values.indutry}-${values.subIndustry
-          .toLowerCase()
-          .replace(/ /g, "-")}`;
+  useEffect(() => {
 
-          await updateUserFn({
-            ...values,
-            industry: formattedIndustry,
-          });
-      } catch (error) {
-        console.error("Onboarding error:", error);
-      }
-    };
+    if (result?.success) {
 
-    useEffect(() => {
-      if (updateResult?.success && !updateLoading){
-        toast.success("Profile completed successfully!");
+      toast.success("Profile saved!");
+
+      setTimeout(() => {
         router.push("/dashboard");
         router.refresh();
-      }
-    }, [updateResult, updateLoading]);
+      }, 1500);
+    }
 
-    const watchIndustry = watch("industry");
+  }, [result, router]);
 
+  return (
+    <>
+      {/* FULL SCREEN LOADER */}
+      {(loading || redirectLoading) && (
+        <div className="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-background/95 backdrop-blur-sm">
 
-    return (
-     <div className="flex items-center justify-center bg-background">
-      <Card className="w-full max-w-lg mt-10 mx-2">
-        <CardHeader>
-          <CardTitle className="gradient-title text-4xl">
-            Complete Your Profile
-          </CardTitle>
-          <CardDescription>
-            Select your industry to get personalized career insights and
-            recommendations.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          <Loader2 className="h-14 w-14 animate-spin text-primary" />
 
-          <form className="space-y-6 " onSubmit={handleSubmit(onSubmit)}> 
-           <div className="space-y-2">
-               <Label htmlFor="industry">Industry</Label>
-                <Select
-                onValueChange = {(value) => {
-                  setValue("industry", value);
-                  setSelectedIndustry(
-                    industries.find((ind) => ind.id === value)
-                  );
-                  setValue("subIndustry", "");
-                }}
+          <p className="mt-4 text-lg font-medium">
+            Setting up your profile...
+          </p>
+
+        </div>
+      )}
+
+      <div className="flex min-h-[72vh] items-center justify-center px-4">
+
+        <Card className="w-full max-w-xl">
+
+          <CardHeader className="text-center">
+
+            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <UserRoundCheck className="h-6 w-6" />
+            </div>
+
+            <CardTitle className="text-3xl font-bold">
+              Complete Profile
+            </CardTitle>
+
+            <CardDescription>
+              Personalize insights and interview prep around your goals.
+            </CardDescription>
+
+          </CardHeader>
+
+          <CardContent>
+
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-6"
+            >
+
+              {/* Industry */}
+              <div className="space-y-2">
+
+                <Label>Industry</Label>
+
+                <select
+                  className="h-10 w-full rounded-lg border border-input bg-secondary/65 px-3.5 py-2 text-sm shadow-sm outline-none transition focus:border-ring focus:ring-3 focus:ring-ring/25"
+                  {...register("industry")}
+                  onChange={(e) => {
+
+                    const value = e.target.value;
+
+                    setValue("industry", value);
+
+                    const selected = industries.find(
+                      (i) => i.id === value
+                    );
+
+                    setSelectedIndustry(selected);
+
+                    setValue("subIndustry", "");
+                  }}
                 >
-                  <SelectTrigger id = "industry">
-                    <SelectValue placeholder="Select an industry" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {industries.map((ind) => {
-                     return (
-                      <SelectItem value={ind.id} key={ind.id}>
-                        {ind.name}
-                      </SelectItem>
-                     );
-                    })}
-                  </SelectContent>
-                </Select>
+
+                  <option value="">
+                    Select Industry
+                  </option>
+
+                  {industries.map((ind) => (
+                    <option
+                      key={ind.id}
+                      value={ind.id}
+                    >
+                      {ind.name}
+                    </option>
+                  ))}
+
+                </select>
+
                 {errors.industry && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-red-500 text-sm">
                     {errors.industry.message}
                   </p>
                 )}
-              </div>  
 
-
-            { watchIndustry && (
-              <div className="space-y-2">
-               <Label htmlFor="subIndustry">Specialization</Label>
-                <Select onValueChange = {(value) => setValue("subIndustry", value)}>
-                  <SelectTrigger id = "subIndustry">
-                    <SelectValue placeholder="Select an industry" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {selectedIndustry?.subIndustries.map((ind) => {
-                     return (
-                      <SelectItem value={ind} key={ind}>
-                        {ind}
-                      </SelectItem>
-                     );
-                    })}
-                  </SelectContent>
-                </Select>
-                {errors.industry && (
-                  <p className="text-sm text-red-500">
-                    {errors.subIndustry.message}
-                  </p>
-                )}
               </div>
+
+              {/* Specialization */}
+              {watchIndustry && selectedIndustry && (
+
+                <div className="space-y-2">
+
+                  <Label>Specialization</Label>
+
+                  <select
+                    className="h-10 w-full rounded-lg border border-input bg-secondary/65 px-3.5 py-2 text-sm shadow-sm outline-none transition focus:border-ring focus:ring-3 focus:ring-ring/25"
+                    {...register("subIndustry")}
+                  >
+
+                    <option value="">
+                      Select specialization
+                    </option>
+
+                    {selectedIndustry.subIndustries.map((s) => (
+                      <option
+                        key={s}
+                        value={s}
+                      >
+                        {s}
+                      </option>
+                    ))}
+
+                  </select>
+
+                </div>
               )}
 
+              {/* Experience */}
               <div className="space-y-2">
-                <Label htmlFor="experience">Years of Experience</Label>
+
+                <Label>Experience</Label>
+
                 <Input
-                id="experience"
-                type="number"
-                min="0"
-                max="50"
-                placeholder="Enter years of experience"
-                {...register("experience")}
+                  type="number"
+                  min="0"
+                  {...register("experience")}
                 />
 
-                {errors.experience && (
-                  <p className="text-sm text-red-500">
-                    {errors.experience.message}
-                  </p>
-                )}
-                </div>
+              </div>
 
-                <div className="space-y-2">
-                <Label htmlFor="skills">Skills</Label>
+              {/* Skills */}
+              <div className="space-y-2">
+
+                <Label>Skills</Label>
+
                 <Input
-                id="skills"
-                placeholder="e.g. , Python, JavaScript, Project Management"
-                {...register("skills")}
+                  placeholder="React, Node, AI..."
+                  {...register("skills")}
                 />
 
-                <p className="text-sm text-muted-foreground">
-                  Seperate multiple skills with commas
-                </p>
+              </div>
 
-                {errors.skills && (
-                  <p className="text-sm text-red-500">
-                    {errors.skills.message}</p>
-                )}
-                </div>
+              {/* Bio */}
+              <div className="space-y-2">
 
-                <div className="space-y-2">
-                <Label htmlFor="bio">Professional Bio</Label>
+                <Label>Bio</Label>
+
                 <Textarea
-                id="bio"
-                placeholder="Tell us about your professional background..."
-                className="h-32"
-                {...register("bio")}
+                  rows={4}
+                  {...register("bio")}
                 />
 
+              </div>
 
-                {errors.bio && (
-                  <p className="text-sm text-red-500">
-                    {errors.bio.message}</p>
-                )}
-                </div>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={loading || redirectLoading}
+              >
 
-                <Button type="submit" className="w-full" disabled={updateLoading}>
-                  {updateLoading ? (
-                    <>
+                {loading || redirectLoading ? (
+                  <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
-                    </>
-                  ) : (
-                    "Complete Profile"
-                  )}
-                </Button>
+                    Saving Profile...
+                  </>
+                ) : (
+                  "Save Profile"
+                )}
+
+              </Button>
+
             </form>
-           </CardContent>
-         </Card>
-    </div>
+
+          </CardContent>
+
+        </Card>
+
+      </div>
+    </>
   );
-};
-export default OnboardingForm;
+}

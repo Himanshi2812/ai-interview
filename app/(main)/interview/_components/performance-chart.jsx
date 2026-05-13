@@ -51,14 +51,14 @@ export default function PerformanceChart({ assessments }) {
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis domain={[0, 100]} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(111,98,86,0.25)" />
+              <XAxis dataKey="date" tick={{ fill: "currentColor", fontSize: 12 }} />
+              <YAxis domain={[0, 100]} tick={{ fill: "currentColor", fontSize: 12 }} />
               <Tooltip
                 content={({ active, payload }) => {
                   if (active && payload?.length) {
                     return (
-                      <div className="bg-background border rounded-lg p-2 shadow-md">
+                      <div className="bg-card border border-border/80 rounded-lg p-3 shadow-xl">
                         <p className="text-sm font-medium">
                           Score: {payload[0].value}%
                         </p>
@@ -74,9 +74,9 @@ export default function PerformanceChart({ assessments }) {
               <Line
                type="monotone"
                dataKey="score"
-               stroke="#edf0f6ff" // solid color
-               strokeWidth={2}
-               dot={{ r: 4, fill: "#d1d6e0ff" }}
+               stroke="#0f766e"
+               strokeWidth={3}
+               dot={{ r: 4, fill: "#0f766e" }}
               activeDot={{ r: 6 }}
                />
 

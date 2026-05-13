@@ -23,11 +23,11 @@
 // export { Progress }
 
 // components/ui/progress.jsx
-export const Progress = ({ value }) => {
+export const Progress = ({ value, className = "" }) => {
   return (
-    <div className="w-full bg-gray-200 rounded-full h-4">
+    <div className={`h-3 w-full overflow-hidden rounded-full bg-muted shadow-inner ${className}`}>
       <div
-        className="bg-blue-500 h-4 rounded-full"
+        className="h-full rounded-full bg-primary transition-all duration-500"
         style={{ width: `${value}%` }}
       />
     </div>

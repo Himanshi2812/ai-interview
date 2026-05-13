@@ -105,7 +105,7 @@ export function EntryForm({ type, entries, onChange }) {
     <div className="space-y-4">
       <div className="space-y-4">
         {entries.map((item, index) => (
-          <Card key={index}>
+          <Card key={index} className="bg-card/65">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 {item.title} @ {item.organization}
@@ -134,12 +134,12 @@ export function EntryForm({ type, entries, onChange }) {
       </div>
 
       {isAdding && (
-        <Card>
+        <Card className="bg-card/65">
           <CardHeader>
             <CardTitle>Add {type}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Input
                   placeholder="Title/Position"
@@ -164,7 +164,7 @@ export function EntryForm({ type, entries, onChange }) {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Input
                   type="month"
@@ -192,7 +192,7 @@ export function EntryForm({ type, entries, onChange }) {
               </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2 rounded-lg border border-border/70 bg-card/45 p-3">
               <input
                 type="checkbox"
                 id="current"

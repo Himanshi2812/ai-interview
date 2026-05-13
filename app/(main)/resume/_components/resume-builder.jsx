@@ -206,12 +206,17 @@ export default function ResumeBuilder({ initialContent }) {
   };
 
   return (
-    <div data-color-mode="light" className="space-y-4">
-      <div className="flex flex-col md:flex-row justify-between items-center gap-2">
-        <h1 className="font-bold gradient-title text-5xl md:text-6xl">
-          Resume Builder
-        </h1>
-        <div className="space-x-2">
+    <div data-color-mode="light" className="space-y-6">
+      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h1 className="font-bold gradient-title text-4xl md:text-6xl">
+            Resume Builder
+          </h1>
+          <p className="mt-2 max-w-2xl text-muted-foreground">
+            Build a clean, focused resume and export it when you are ready.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
           <Button
             variant="destructive"
             onClick={handleSubmit(onSubmit)}
@@ -245,7 +250,7 @@ export default function ResumeBuilder({ initialContent }) {
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="gap-4">
         <TabsList>
           <TabsTrigger value="edit">Form</TabsTrigger>
           <TabsTrigger value="preview">Markdown</TabsTrigger>
@@ -254,9 +259,9 @@ export default function ResumeBuilder({ initialContent }) {
         <TabsContent value="edit">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             {/* Contact Information */}
-            <div className="space-y-4">
+            <div className="surface-panel space-y-4 rounded-lg p-5 sm:p-6">
               <h3 className="text-lg font-medium">Contact Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-lg bg-muted/50">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Email</label>
                   <Input
@@ -316,7 +321,7 @@ export default function ResumeBuilder({ initialContent }) {
             </div>
 
             {/* Summary */}
-            <div className="space-y-4">
+            <div className="surface-panel space-y-4 rounded-lg p-5 sm:p-6">
               <h3 className="text-lg font-medium">Professional Summary</h3>
               <Controller
                 name="summary"
@@ -336,7 +341,7 @@ export default function ResumeBuilder({ initialContent }) {
             </div>
 
             {/* Skills */}
-            <div className="space-y-4">
+            <div className="surface-panel space-y-4 rounded-lg p-5 sm:p-6">
               <h3 className="text-lg font-medium">Skills</h3>
               <Controller
                 name="skills"
@@ -356,7 +361,7 @@ export default function ResumeBuilder({ initialContent }) {
             </div>
 
             {/* Experience */}
-            <div className="space-y-4">
+            <div className="surface-panel space-y-4 rounded-lg p-5 sm:p-6">
               <h3 className="text-lg font-medium">Work Experience</h3>
               <Controller
                 name="experience"
@@ -377,7 +382,7 @@ export default function ResumeBuilder({ initialContent }) {
             </div>
 
             {/* Education */}
-            <div className="space-y-4">
+            <div className="surface-panel space-y-4 rounded-lg p-5 sm:p-6">
               <h3 className="text-lg font-medium">Education</h3>
               <Controller
                 name="education"
@@ -398,7 +403,7 @@ export default function ResumeBuilder({ initialContent }) {
             </div>
 
             {/* Projects */}
-            <div className="space-y-4">
+            <div className="surface-panel space-y-4 rounded-lg p-5 sm:p-6">
               <h3 className="text-lg font-medium">Projects</h3>
               <Controller
                 name="projects"
@@ -448,11 +453,11 @@ export default function ResumeBuilder({ initialContent }) {
             <div className="flex p-3 gap-2 items-center border-2 border-yellow-600 text-yellow-600 rounded mb-2">
               <AlertTriangle className="h-5 w-5" />
               <span className="text-sm">
-                You will lose editied markdown if you update the form data.
+                You will lose edited markdown if you update the form data.
               </span>
             </div>
           )}
-          <div className="border rounded-lg">
+          <div className="overflow-hidden rounded-lg border border-border/80 bg-card shadow-sm">
             <MDEditor
               value={previewContent}
               onChange={setPreviewContent}

@@ -81,7 +81,7 @@ const DashboardView = ({ insights }) => {
 
       {/* Market Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+        <Card className="hover:-translate-y-0.5 transition-transform">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Market Outlook
@@ -89,14 +89,14 @@ const DashboardView = ({ insights }) => {
             <OutlookIcon className={`h-4 w-4 ${outlookColor}`} />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{insights.marketOutlook}</div>
+            <div className="text-3xl font-bold">{insights.marketOutlook}</div>
             <p className="text-xs text-muted-foreground">
               Next update {nextUpdateDistance}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:-translate-y-0.5 transition-transform">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Industry Growth
@@ -104,20 +104,20 @@ const DashboardView = ({ insights }) => {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-3xl font-bold">
               {insights.growthRate.toFixed(1)}%
             </div>
             <Progress value={insights.growthRate} className="mt-2" />
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:-translate-y-0.5 transition-transform">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Demand Level</CardTitle>
             <BriefcaseIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{insights.demandLevel}</div>
+            <div className="text-3xl font-bold">{insights.demandLevel}</div>
             <div
               className={`h-2 w-full rounded-full mt-2 ${getDemandLevelColor(
                 insights.demandLevel
@@ -126,7 +126,7 @@ const DashboardView = ({ insights }) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:-translate-y-0.5 transition-transform">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Top Skills</CardTitle>
             <Brain className="h-4 w-4 text-muted-foreground" />
@@ -144,9 +144,9 @@ const DashboardView = ({ insights }) => {
       </div>
 
       {/* Salary Ranges Chart */}
-      <Card className="col-span-4">
+      <Card className="col-span-4 overflow-hidden">
         <CardHeader>
-          <CardTitle>Salary Ranges by Role</CardTitle>
+          <CardTitle className="text-2xl">Salary Ranges by Role</CardTitle>
           <CardDescription>
             Displaying minimum, median, and maximum salaries (in thousands)
           </CardDescription>
@@ -155,14 +155,14 @@ const DashboardView = ({ insights }) => {
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={salaryData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(111,98,86,0.25)" />
+                <XAxis dataKey="name" tick={{ fill: "currentColor", fontSize: 12 }} />
+                <YAxis tick={{ fill: "currentColor", fontSize: 12 }} />
                 <Tooltip
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-background border rounded-lg p-2 shadow-md">
+                        <div className="bg-card border border-border/80 rounded-lg p-3 shadow-xl">
                           <p className="font-medium">{label}</p>
                           {payload.map((item) => (
                             <p key={item.name} className="text-sm">
@@ -175,9 +175,9 @@ const DashboardView = ({ insights }) => {
                     return null;
                   }}
                 />
-                <Bar dataKey="min" fill="#94a3b8" name="Min Salary (K)" />
-                <Bar dataKey="median" fill="#64748b" name="Median Salary (K)" />
-                <Bar dataKey="max" fill="#475569" name="Max Salary (K)" />
+                <Bar dataKey="min" fill="#99bfb9" radius={[6, 6, 0, 0]} name="Min Salary (K)" />
+                <Bar dataKey="median" fill="#0f766e" radius={[6, 6, 0, 0]} name="Median Salary (K)" />
+                <Bar dataKey="max" fill="#d97706" radius={[6, 6, 0, 0]} name="Max Salary (K)" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -196,8 +196,8 @@ const DashboardView = ({ insights }) => {
           <CardContent>
             <ul className="space-y-4">
               {insights.keyTrends.map((trend, index) => (
-                <li key={index} className="flex items-start space-x-2">
-                  <div className="h-2 w-2 mt-2 rounded-full bg-primary" />
+                <li key={index} className="flex items-start gap-3 rounded-lg border border-border/60 bg-card/45 p-3">
+                  <div className="h-2 w-2 mt-2 rounded-full bg-primary flex-shrink-0" />
                   <span>{trend}</span>
                 </li>
               ))}

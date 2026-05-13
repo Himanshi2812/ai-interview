@@ -7,11 +7,14 @@ export default async function InterviewPrepPage() {
   const assessments = await getAssessments();
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-5">
-        <h1 className="text-6xl font-bold gradient-title">
+    <div className="space-y-6">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-4xl font-bold gradient-title md:text-6xl">
           Interview Preparation
         </h1>
+        <p className="max-w-2xl text-muted-foreground">
+          Practice questions, review performance trends, and keep improving with focused feedback.
+        </p>
       </div>
       <div className="space-y-6">
         <StatsCards assessments={assessments} />

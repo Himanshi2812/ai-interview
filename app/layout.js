@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
     >
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${inter.className} bg-background text-foreground`}
+          className={`${inter.className} bg-background text-foreground antialiased`}
         >
           <ThemeProvider
             attribute="class"
@@ -43,10 +43,10 @@ export default function RootLayout({ children }) {
               {children}
             </main>
 
-            {/* Footer */}
-            <footer className="bg-muted/50 py-12">
-              <div className="container mx-auto px-4 text-center text-gray-200">
-                <p>MADE BY TEAM</p>
+            <footer className="border-t border-border/70 bg-card/45 py-10 backdrop-blur">
+              <div className="container mx-auto flex flex-col items-center justify-between gap-3 px-4 text-center text-sm text-muted-foreground md:flex-row md:text-left">
+                <p className="font-semibold text-foreground">HireMind</p>
+                <p>Built for sharper interviews, resumes, and career decisions.</p>
               </div>
             </footer>
 

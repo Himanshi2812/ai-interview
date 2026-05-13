@@ -27,7 +27,7 @@ export default function QuizList({ assessments }) {
     <>
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle className="gradient-title text-3xl md:text-4xl">
                 Recent Quizzes
@@ -46,14 +46,14 @@ export default function QuizList({ assessments }) {
             {assessments?.map((assessment, i) => (
               <Card
                 key={assessment.id}
-                className="cursor-pointer hover:bg-muted/50 transition-colors"
+                className="cursor-pointer hover:-translate-y-0.5 hover:border-primary/50 transition-all"
                 onClick={() => setSelectedQuiz(assessment)}
               >
                 <CardHeader>
-                  <CardTitle className="gradient-title text-2xl">
+                  <CardTitle className="text-2xl">
                     Quiz {i + 1}
                   </CardTitle>
-                  <CardDescription className="flex justify-between w-full">
+                  <CardDescription className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:w-full">
                     <div>Score: {assessment.quizScore.toFixed(1)}%</div>
                     <div>
                       {format(
